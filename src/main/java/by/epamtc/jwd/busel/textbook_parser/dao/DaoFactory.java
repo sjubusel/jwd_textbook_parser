@@ -1,6 +1,5 @@
-package by.epamtc.jwd.busel.textbook_parser;
+package by.epamtc.jwd.busel.textbook_parser.dao;
 
-import by.epamtc.jwd.busel.textbook_parser.dao.TextDao;
 import by.epamtc.jwd.busel.textbook_parser.dao.impl.FileTextDao;
 
 public class DaoFactory {
