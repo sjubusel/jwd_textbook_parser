@@ -34,14 +34,14 @@ public class ParserProvider {
                 curlyBracketsStack.pollLast();
             }
         }
-        if (line.matches("[\\w]+\\s=\\s[\\w]+;?")) {
+        if (line.matches("[\\w]+\\s=\\s[\\w]+;?\n?")) {
             isCodelineable = true;
         }
         return isCodelineable;
     }
 
     public void parseAndUpdate(String str, Text text) {
-        if (str.contains("{") || str.matches("[\\w]+\\s=\\s[\\w]+;?")) {
+        if (str.contains("{") || str.matches("[\\w]+\\s=\\s[\\w]+;?\n?")) {
             codeBlockParser.parseAndUpdate(str, text);
         } else {
             textBlockParser.parseAndUpdate(str, text);

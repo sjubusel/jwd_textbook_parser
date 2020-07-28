@@ -21,7 +21,7 @@ public class SentenceIntoSentencePartsParser extends TextParser {
             }
         }
 
-        if (next != null) {
+
             Matcher matcher = sentencePartPattern.matcher(parsableElement);
             if (sentence != null) {
                 while (matcher.find()) {
@@ -37,6 +37,6 @@ public class SentenceIntoSentencePartsParser extends TextParser {
                     sentence.add(new SentenceWord(sentencePart));
                 }
             }
-        }
+
     }
 }
