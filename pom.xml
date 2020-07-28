@@ -13,6 +13,7 @@
     </description>
     <url>https://github.com/sjubusel/jwd_textbook_parser</url>
 
+    <!--TODO add LOG4J-->
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
