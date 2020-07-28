@@ -40,41 +40,42 @@ public class FileTextDao implements TextDao {
                 boolean isCodelineable = parserProvider.isCodeLine(line,
                         curlyBracketsStack);
 
-                if (curlyBracketsStack.isEmpty()) {
-                    if (!isCodelineable) {
-                        if (currentBuilder == nonCodeBlockBuilder) {
-                            currentBuilder.append(line).append('\n');
-                        } else {
-                            String parsableLine = new String(currentBuilder);
-                            parserProvider.parseAndUpdate(parsableLine, text);
-                            currentBuilder.delete(0, currentBuilder.length());
-                            currentBuilder = nonCodeBlockBuilder;
-                            currentBuilder.append(line).append('\n');
-                        }
-                    } else {
-                        if (currentBuilder == codeBlockBuilder) {
-                            currentBuilder.append(line).append('\n');
-                        }
-                    }
-                } else {
-                    if (currentBuilder == codeBlockBuilder) {
-                        currentBuilder.append(line).append('\n');
-                    } else {
-                        String parsableLine = new String(currentBuilder);
-                        parserProvider.parseAndUpdate(parsableLine, text);
+                if (!curlyBracketsStack.isEmpty()) {
+                    if (currentBuilder == nonCodeBlockBuilder) {
+                        String parsableBlock = new String(currentBuilder);
+                        parserProvider.parseAndUpdate(parsableBlock, text);
                         currentBuilder.delete(0, currentBuilder.length());
                         currentBuilder = codeBlockBuilder;
-                        currentBuilder.append(line).append('\n');
+                    }
+                    currentBuilder.append(line).append('\n');
+                    continue;
+                }
+
+                if (!isCodelineable) {
+                    if (currentBuilder == codeBlockBuilder) {
+                        String parsableBlock = new String(currentBuilder);
+                        parserProvider.parseAndUpdate(parsableBlock, text);
+                        currentBuilder.delete(0, currentBuilder.length());
+                        currentBuilder = nonCodeBlockBuilder;
+                    }
+                } else {
+                    if (currentBuilder == nonCodeBlockBuilder) {
+                        String parsableBlock = new String(currentBuilder);
+                        parserProvider.parseAndUpdate(parsableBlock, text);
+                        currentBuilder.delete(0, currentBuilder.length());
+                        currentBuilder = codeBlockBuilder;
                     }
                 }
+                currentBuilder.append(line).append('\n');
             }
         } catch (FileNotFoundException e) {
             throw new DaoException("FILE NOT FOUND", e);
         } catch (IOException e) {
             throw new DaoException("OTHER DAO IO ERROR", e);
         }
-        String parsableLine = new String(currentBuilder);
-        parserProvider.parseAndUpdate(parsableLine, text);
+
+        String lastParsableLine = new String(currentBuilder);
+        parserProvider.parseAndUpdate(lastParsableLine, text);
 
         return text;
     }
