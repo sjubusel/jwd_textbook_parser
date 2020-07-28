@@ -36,7 +36,7 @@ public class FileTextDao implements TextDao {
              BufferedReader bufferedReader = new BufferedReader(in)) {
             Deque<String> curlyBracketsStack = new LinkedList<>();
             while (bufferedReader.ready()) {
-                String line = bufferedReader.readLine();
+                String line = cleanLine(bufferedReader.readLine());
                 boolean isCodelineable = parserProvider.isCodeLine(line,
                         curlyBracketsStack);
 
@@ -78,5 +78,10 @@ public class FileTextDao implements TextDao {
         parserProvider.parseAndUpdate(lastParsableLine, text);
 
         return text;
+    }
+
+    private String cleanLine(String line) {
+        line = line.replaceAll("[ \\t]{2,}|\\t", " ");
+        return line.trim();
     }
 }

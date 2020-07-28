@@ -26,7 +26,7 @@ public class ParserProvider {
     }
 
     public void parseAndUpdate(String line, Text text) {
-        line = line.replaceAll("\\s+", " ");
+
         //TODO depending on whether code block or text line FORWARD to certain chains of parsers
     }
 }
