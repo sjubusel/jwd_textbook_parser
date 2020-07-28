@@ -20,10 +20,19 @@ public class FileTextDao implements TextDao {
     @Override
     public Text find(String textName) throws DaoException {
         Text text = new TextComposite();
-        StringBuilder sb = new StringBuilder();
+        StringBuilder codeBlockBuilder = new StringBuilder();
+        StringBuilder nonCodeBlockBuilder = new StringBuilder();
+        StringBuilder currentBuilder = nonCodeBlockBuilder;
+
+        String testFilePath = System.getProperty("user.dir") +
+                File.separator + "src" +
+                File.separator + "main" +
+                File.separator + "resources" +
+                File.separator + textName;
+        String filePath = System.getProperty("java.class.path") + File.separator + textName;
 
         //TODO create class FileAssistant in order to form a File-Path
-        try (FileReader in = new FileReader(System.getProperty("java.class.path" + File.separator + textName));
+        try (FileReader in = new FileReader(testFilePath);
              BufferedReader bufferedReader = new BufferedReader(in)) {
             Deque<String> curlyBracketsStack = new LinkedList<>();
             while (bufferedReader.ready()) {
@@ -32,14 +41,31 @@ public class FileTextDao implements TextDao {
                         curlyBracketsStack);
 
                 if (curlyBracketsStack.isEmpty()) {
-                    if (isCodelineable) {
-                        sb.append(line);
-                        line = new String(sb);
-                        sb.delete(0, sb.length());
+                    if (!isCodelineable) {
+                        if (currentBuilder == nonCodeBlockBuilder) {
+                            currentBuilder.append(line).append('\n');
+                        } else {
+                            String parsableLine = new String(currentBuilder);
+                            parserProvider.parseAndUpdate(parsableLine, text);
+                            currentBuilder.delete(0, currentBuilder.length());
+                            currentBuilder = nonCodeBlockBuilder;
+                            currentBuilder.append(line).append('\n');
+                        }
+                    } else {
+                        if (currentBuilder == codeBlockBuilder) {
+                            currentBuilder.append(line).append('\n');
+                        }
                     }
-                    parserProvider.parseAndUpdate(line, text);
                 } else {
-                    sb.append(line).append('\n');
+                    if (currentBuilder == codeBlockBuilder) {
+                        currentBuilder.append(line).append('\n');
+                    } else {
+                        String parsableLine = new String(currentBuilder);
+                        parserProvider.parseAndUpdate(parsableLine, text);
+                        currentBuilder.delete(0, currentBuilder.length());
+                        currentBuilder = codeBlockBuilder;
+                        currentBuilder.append(line).append('\n');
+                    }
                 }
             }
         } catch (FileNotFoundException e) {
@@ -47,6 +73,8 @@ public class FileTextDao implements TextDao {
         } catch (IOException e) {
             throw new DaoException("OTHER DAO IO ERROR", e);
         }
+        String parsableLine = new String(currentBuilder);
+        parserProvider.parseAndUpdate(parsableLine, text);
 
         return text;
     }
