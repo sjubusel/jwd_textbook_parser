@@ -1,14 +1,24 @@
 package by.epamtc.jwd.busel.textbook_parser.dao.util;
 
+import by.epamtc.jwd.busel.textbook_parser.dao.util.parser.*;
 import by.epamtc.jwd.busel.textbook_parser.entity.Text;
 
 import java.util.Deque;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-//TODO create chains of parsers
 public class ParserProvider {
-    //TODO create parsers
+    private TextParser codeBlockParser = new CodeBlockIntoTextComponentParser();
+    private TextParser textBlockParser = new TextBlockIntoParagraphParser();
+    private TextParser paragraphParser = new ParagraphIntoSentenceParser();
+    private TextParser sentenceParser = new SentenceIntoSentencePartsParser();
+
+    {
+        codeBlockParser.setNext(textBlockParser);
+        textBlockParser.setNext(paragraphParser);
+        paragraphParser.setNext(sentenceParser);
+        sentenceParser.setNext(null);
+    }
 
     private final Pattern curlyBracketsPattern = Pattern.compile("[{}]");
 
@@ -32,10 +42,9 @@ public class ParserProvider {
 
     public void parseAndUpdate(String str, Text text) {
         if (str.contains("{") || str.matches("[\\w]+\\s=\\s[\\w]+;?")) {
-            // отправить в парсер из блока кода
+            codeBlockParser.parseAndUpdate(str, text);
         } else {
-            // отправить в парсер из текстового блока в абзац из абщзаца в предложение из предложения в слово
+            textBlockParser.parseAndUpdate(str, text);
         }
-        //TODO depending on whether code block or text line FORWARD to certain chains of parsers
     }
 }
