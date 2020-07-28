@@ -2,22 +2,22 @@ package by.epamtc.jwd.busel.textbook_parser.entity.leaf;
 
 import by.epamtc.jwd.busel.textbook_parser.entity.Text;
 
-public class Word implements Text {
+public class PunctuationMark implements Text {
     /**
-     * simple word or punctuation mark
+     * a punctuation mark
      */
     String value;
 
-    public Word() {
+    public PunctuationMark() {
     }
 
-    public Word(String value) {
+    public PunctuationMark(String value) {
         this.value = value;
     }
 
     @Override
     public void m() {
-        System.out.println(value);
+
     }
 
     @Override
@@ -35,12 +35,16 @@ public class Word implements Text {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
+        if (this == o) {
+            return true;
+        }
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Word word = (Word) o;
-        return value.equals(word.value);
+
+        PunctuationMark punctuationMark = (PunctuationMark) o;
+
+        return value.equals(punctuationMark.value);
     }
 
     @Override
@@ -52,7 +56,7 @@ public class Word implements Text {
 
     @Override
     public String toString() {
-        return "Word{" +
+        return "PunctuationMark{" +
                 "value='" + value + '\'' +
                 '}';
     }
