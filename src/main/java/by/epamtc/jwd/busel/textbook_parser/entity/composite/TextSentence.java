@@ -12,24 +12,24 @@ public class TextSentence implements Text, Composite {
     /**
      * words
      */
-    List<Text> words = new ArrayList<>();
+    List<Text> sentenceParts = new ArrayList<>();
 
     public TextSentence() {
     }
 
     public TextSentence(List<Text> words) {
-        this.words = words;
+        this.sentenceParts = words;
     }
 
     @Override
     public void fillWithContents(StringBuilder builder) {
-        for (int i = 0; i < words.size(); i++) {
-            if ((i != 0) && (words.get(i).getClass() != PunctuationMark.class)) {
+        for (int i = 0; i < sentenceParts.size(); i++) {
+            if ((i != 0) && (sentenceParts.get(i).getClass() != PunctuationMark.class)) {
                 builder.append(' ');
             }
             CompositeElement element = null;
-            if (!words.get(i).isComposite()) {
-                element = (CompositeElement) words.get(i);
+            if (!sentenceParts.get(i).isComposite()) {
+                element = (CompositeElement) sentenceParts.get(i);
             }
             if (element != null) {
                 builder.append(element.receiveContents());
@@ -44,25 +44,25 @@ public class TextSentence implements Text, Composite {
 
     @Override
     public void add(Text component) {
-        words.add(component);
+        sentenceParts.add(component);
     }
 
     @Override
     public void remove(Text component) {
-        words.remove(component);
+        sentenceParts.remove(component);
     }
 
     @Override
     public List<Text> receiveCompositeContents() {
-        return words;
+        return sentenceParts;
     }
 
-    public List<Text> getWords() {
-        return words;
+    public List<Text> getSentenceParts() {
+        return sentenceParts;
     }
 
-    public void setWords(List<Text> words) {
-        this.words = words;
+    public void setSentenceParts(List<Text> sentenceParts) {
+        this.sentenceParts = sentenceParts;
     }
 
     @Override
@@ -76,8 +76,8 @@ public class TextSentence implements Text, Composite {
 
         TextSentence textSentence = (TextSentence) o;
         boolean isEquals = true;
-        for (int i = 0; i < textSentence.words.size(); i++) {
-            if (!words.get(i).equals(textSentence.words.get(i))) {
+        for (int i = 0; i < textSentence.sentenceParts.size(); i++) {
+            if (!sentenceParts.get(i).equals(textSentence.sentenceParts.get(i))) {
                 isEquals = false;
                 break;
             }
@@ -89,7 +89,7 @@ public class TextSentence implements Text, Composite {
     @Override
     public int hashCode() {
         int hash = 17;
-        for (Text word : words) {
+        for (Text word : sentenceParts) {
             hash = 31 * hash + (word == null ? 0 : word.hashCode());
         }
         return hash;
@@ -98,7 +98,7 @@ public class TextSentence implements Text, Composite {
     @Override
     public String toString() {
         return "TextSentence{" +
-                "words=" + words +
+                "sentenceParts=" + sentenceParts +
                 '}';
     }
 }

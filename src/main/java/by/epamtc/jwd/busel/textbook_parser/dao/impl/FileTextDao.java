@@ -34,6 +34,7 @@ public class FileTextDao implements TextDao {
         //TODO create class FileAssistant in order to form a File-Path
         try (FileReader in = new FileReader(testFilePath);
              BufferedReader bufferedReader = new BufferedReader(in)) {
+
             Deque<String> curlyBracketsStack = new LinkedList<>();
             while (bufferedReader.ready()) {
                 String line = cleanLine(bufferedReader.readLine());
