@@ -28,11 +28,24 @@ public class Main {
         System.out.println(new String(builder));
         builder.delete(0, builder.length());
 
+        // a modified text im compliance with Functionality 12
         textProcessingService.deleteWordsOfLengthIfFirstLetterIsConsonant(text,
                 3);
         text.fillWithContents(builder);
         System.out.println(new String(builder));
         builder.delete(0, builder.length());
 
+        // a modified text in compliance with Functionality 15
+        textProcessingService.deleteCoincidencesOfFirstLetterOfEachWord(text);
+        text.fillWithContents(builder);
+        System.out.println(new String(builder));
+        builder.delete(0, builder.length());
+
+        // a modified text in compliance with Functionality 16
+        textProcessingService.replaceWordsOfLengthWithSubstring(text, 4,
+                "REPLACING SUBSTRING");
+        text.fillWithContents(builder);
+        System.out.println(new String(builder));
+        builder.delete(0, builder.length());
     }
 }
