@@ -6,6 +6,8 @@ import by.epamtc.jwd.busel.textbook_parser.dao.util.FileAccessAssistant;
 import by.epamtc.jwd.busel.textbook_parser.dao.util.ParserProvider;
 import by.epamtc.jwd.busel.textbook_parser.entity.Text;
 import by.epamtc.jwd.busel.textbook_parser.entity.composite.TextComposite;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -14,9 +16,11 @@ import java.io.IOException;
 import java.util.Deque;
 import java.util.LinkedList;
 
-import static by.epamtc.jwd.busel.textbook_parser.entity.RegExPattern.*;
+import static by.epamtc.jwd.busel.textbook_parser.entity.RegExPattern.BLANK_SPACE;
+import static by.epamtc.jwd.busel.textbook_parser.entity.RegExPattern.REPEATING_WHITESPACES;
 
 public class FileTextDao implements TextDao {
+    private Logger logger = LoggerFactory.getLogger(FileTextDao.class);
     private ParserProvider parserProvider = new ParserProvider();
     private FileAccessAssistant fileAssistant = FileAccessAssistant.getInstance();
 
@@ -61,8 +65,10 @@ public class FileTextDao implements TextDao {
                 currentBuilder.append(line).append('\n');
             }
         } catch (FileNotFoundException e) {
+            logger.error("FILE WITH NAME \"{}\" NOT FOUND", textName, e);
             throw new DaoException("FILE NOT FOUND", e);
         } catch (IOException e) {
+            logger.error("OTHER DAO IO ERROR", e);
             throw new DaoException("OTHER DAO IO ERROR", e);
         }
 
