@@ -1,6 +1,8 @@
 package by.epamtc.jwd.busel.textbook_parser.dao.util;
 
 import by.epamtc.jwd.busel.textbook_parser.dao.exception.DaoException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,6 +11,7 @@ import java.net.URL;
 import java.util.Enumeration;
 
 public class FileAccessAssistant {
+    private Logger logger = LoggerFactory.getLogger(FileAccessAssistant.class);
     private static final FileAccessAssistant instance = new FileAccessAssistant();
 
     private String sourceFilesPath = null;
@@ -33,7 +36,9 @@ public class FileAccessAssistant {
             sourceFilesPath = new File(resources.nextElement().toURI())
                     .getAbsolutePath();
         } catch (IOException | URISyntaxException e) {
-            throw new DaoException("ERROR CAUGHT WHILE FINDING FILEPATH", e);
+            logger.error("ERROR CAUGHT WHILE FINDING A SOURCES FILES PATH", e);
+            throw new DaoException("ERROR CAUGHT WHILE FINDING A SOURCES FILES" +
+                    "PATH", e);
         }
     }
 }
