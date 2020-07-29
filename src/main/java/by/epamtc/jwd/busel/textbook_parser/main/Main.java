@@ -2,6 +2,7 @@ package by.epamtc.jwd.busel.textbook_parser.main;
 
 import by.epamtc.jwd.busel.textbook_parser.entity.Text;
 import by.epamtc.jwd.busel.textbook_parser.service.ServiceFactory;
+import by.epamtc.jwd.busel.textbook_parser.service.TextProcessingService;
 import by.epamtc.jwd.busel.textbook_parser.service.TextService;
 import by.epamtc.jwd.busel.textbook_parser.service.exception.ServiceException;
 
@@ -9,6 +10,8 @@ public class Main {
     public static void main(String[] args) {
         ServiceFactory serviceFactory = ServiceFactory.getInstance();
         TextService textService = serviceFactory.getTextService();
+        TextProcessingService textProcessingService
+                = serviceFactory.getTextProcessingService();
         Text text;
         try {
             text = textService.find("text.txt");
@@ -23,7 +26,13 @@ public class Main {
         StringBuilder builder = new StringBuilder();
         text.fillWithContents(builder);
         System.out.println(new String(builder));
+        builder.delete(0, builder.length());
 
+        textProcessingService.deleteWordsOfLengthIfFirstLetterIsConsonant(text,
+                3);
+        text.fillWithContents(builder);
+        System.out.println(new String(builder));
+        builder.delete(0, builder.length());
 
     }
 }

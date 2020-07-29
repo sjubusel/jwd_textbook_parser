@@ -68,7 +68,7 @@ public class DefaultTextProcessingService implements TextProcessingService {
             Text sentencePart = iterator.next();
             if (sentencePart.getClass() == SentenceWord.class) {
                 SentenceWord word = (SentenceWord) sentencePart;
-                if (isWordToDelete(word)) {
+                if (isWordToDelete(word, length)) {
                     iterator.remove();
                 }
             }
@@ -76,12 +76,14 @@ public class DefaultTextProcessingService implements TextProcessingService {
         }
     }
 
-    private boolean isWordToDelete(SentenceWord word) {
+    private boolean isWordToDelete(SentenceWord word, int length) {
         if (word.getValue().matches("[-'\"A-Za-z]+")) {
             if (!word.getValue().startsWith("\"")) {
-                return isLetterConsonant(word.getValue().charAt(0));
+                return isLetterConsonant(word.getValue().charAt(0))
+                        && (word.getValue().length() == length);
             } else {
-                return isLetterConsonant(word.getValue().charAt(1));
+                return isLetterConsonant(word.getValue().charAt(1))
+                        && (word.getValue().length() == length + 2);
             }
         }
         return false;
