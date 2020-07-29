@@ -9,9 +9,9 @@ public class Main {
     public static void main(String[] args) {
         ServiceFactory serviceFactory = ServiceFactory.getInstance();
         TextService textService = serviceFactory.getTextService();
-        Text text = null;
+        Text text;
         try {
-            textService.find("text.txt");
+            text = textService.find("text.txt");
         } catch (ServiceException e) {
             System.err.println(e.toString());
             System.out.println("SOMETHING WENT WRONG, PLEASE CONTACT: " +
