@@ -11,7 +11,7 @@ public class Main {
         TextService textService = serviceFactory.getTextService();
         Text text = null;
         try {
-            textService.find("text.txt")
+            textService.find("text.txt");
         } catch (ServiceException e) {
             System.err.println(e.toString());
             System.out.println("SOMETHING WENT WRONG, PLEASE CONTACT: " +
