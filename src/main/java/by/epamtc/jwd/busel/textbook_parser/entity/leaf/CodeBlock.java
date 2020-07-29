@@ -5,7 +5,7 @@ import by.epamtc.jwd.busel.textbook_parser.entity.Text;
 
 public class CodeBlock implements Text, CompositeElement {
     /**
-     * code block, which consists of clock lines
+     * a code block, which consists of clock lines
      */
     String value;
 

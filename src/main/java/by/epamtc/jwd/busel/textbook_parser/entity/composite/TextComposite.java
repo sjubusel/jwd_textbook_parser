@@ -1,6 +1,7 @@
 package by.epamtc.jwd.busel.textbook_parser.entity.composite;
 
 import by.epamtc.jwd.busel.textbook_parser.entity.Composite;
+import by.epamtc.jwd.busel.textbook_parser.entity.RegExPattern;
 import by.epamtc.jwd.busel.textbook_parser.entity.Text;
 
 import java.util.ArrayList;
@@ -27,7 +28,7 @@ public class TextComposite implements Text, Composite {
         for (Text component : components) {
             component.fillWithContents(builder);
             if (component.getClass() == Paragraph.class) {
-                builder.append('\n');
+                builder.append(RegExPattern.LINE_BREAK);
             }
         }
     }

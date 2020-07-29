@@ -17,8 +17,8 @@ public class TextSentence implements Text, Composite {
     public TextSentence() {
     }
 
-    public TextSentence(List<Text> words) {
-        this.sentenceParts = words;
+    public TextSentence(List<Text> sentenceParts) {
+        this.sentenceParts = sentenceParts;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package by.epamtc.jwd.busel.textbook_parser.entity.composite;
 
 import by.epamtc.jwd.busel.textbook_parser.entity.Composite;
+import by.epamtc.jwd.busel.textbook_parser.entity.RegExPattern;
 import by.epamtc.jwd.busel.textbook_parser.entity.Text;
 
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ public class Paragraph implements Text, Composite {
     public void fillWithContents(StringBuilder builder) {
         for (int i = 0; i < sentences.size(); i++) {
             if (i != 0) {
-                builder.append(' ');
+                builder.append(RegExPattern.BLANK_SPACE);
             }
             sentences.get(i).fillWithContents(builder);
         }

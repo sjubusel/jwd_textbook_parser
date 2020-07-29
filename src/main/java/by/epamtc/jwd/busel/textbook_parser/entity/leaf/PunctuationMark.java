@@ -18,7 +18,7 @@ public class PunctuationMark implements Text, CompositeElement {
 
     @Override
     public void fillWithContents(StringBuilder builder) {
-
+        builder.append(value);
     }
 
     @Override
