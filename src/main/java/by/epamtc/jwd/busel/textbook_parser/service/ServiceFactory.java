@@ -15,7 +15,7 @@ public class ServiceFactory {
         return instance;
     }
 
-    public TextService getApplianceService() {
+    public TextService getTextService() {
         return textService;
     }
 
