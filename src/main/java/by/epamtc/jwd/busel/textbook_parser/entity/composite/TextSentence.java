@@ -1,7 +1,9 @@
 package by.epamtc.jwd.busel.textbook_parser.entity.composite;
 
 import by.epamtc.jwd.busel.textbook_parser.entity.Composite;
+import by.epamtc.jwd.busel.textbook_parser.entity.CompositeElement;
 import by.epamtc.jwd.busel.textbook_parser.entity.Text;
+import by.epamtc.jwd.busel.textbook_parser.entity.leaf.PunctuationMark;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +23,18 @@ public class TextSentence implements Text, Composite {
 
     @Override
     public void fillWithContents(StringBuilder builder) {
-
+        for (int i = 0; i < words.size(); i++) {
+            if ((i != 0) && (words.get(i).getClass() != PunctuationMark.class)) {
+                builder.append(' ');
+            }
+            CompositeElement element = null;
+            if (!words.get(i).isComposite()) {
+                element = (CompositeElement) words.get(i);
+            }
+            if (element != null) {
+                builder.append(element.receiveContents());
+            }
+        }
     }
 
     @Override

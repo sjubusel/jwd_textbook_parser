@@ -21,7 +21,12 @@ public class Paragraph implements Text, Composite {
 
     @Override
     public void fillWithContents(StringBuilder builder) {
-
+        for (int i = 0; i < sentences.size(); i++) {
+            if (i != 0) {
+                builder.append(' ');
+            }
+            sentences.get(i).fillWithContents(builder);
+        }
     }
 
     @Override

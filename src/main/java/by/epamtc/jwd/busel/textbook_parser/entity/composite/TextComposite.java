@@ -26,6 +26,9 @@ public class TextComposite implements Text, Composite {
     public void fillWithContents(StringBuilder builder) {
         for (Text component : components) {
             component.fillWithContents(builder);
+            if (component.getClass() == Paragraph.class) {
+                builder.append('\n');
+            }
         }
     }
 
