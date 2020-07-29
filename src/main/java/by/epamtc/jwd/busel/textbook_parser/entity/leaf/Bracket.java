@@ -16,7 +16,7 @@ public class Bracket implements Text {
     }
 
     @Override
-    public void m() {
+    public void fillWithContents(StringBuilder builder) {
 
     }
 
@@ -52,5 +52,12 @@ public class Bracket implements Text {
         int hash = 17;
         hash = 31 * hash + (value == null ? 0 : value.hashCode());
         return hash;
+    }
+
+    @Override
+    public String toString() {
+        return "Bracket{" +
+                "value='" + value + '\'' +
+                '}';
     }
 }

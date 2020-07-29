@@ -16,7 +16,7 @@ public class PunctuationMark implements Text {
     }
 
     @Override
-    public void m() {
+    public void fillWithContents(StringBuilder builder) {
 
     }
 

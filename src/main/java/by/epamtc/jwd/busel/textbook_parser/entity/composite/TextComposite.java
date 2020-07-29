@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class TextComposite implements Text, Composite {
     /**
-     * sentences and code blocks
+     * paragraphs and code blocks
      */
     List<Text> components = new ArrayList<>();
 
@@ -23,9 +23,9 @@ public class TextComposite implements Text, Composite {
     }
 
     @Override
-    public void m() {
+    public void fillWithContents(StringBuilder builder) {
         for (Text component : components) {
-            component.m();
+            component.fillWithContents(builder);
         }
     }
 

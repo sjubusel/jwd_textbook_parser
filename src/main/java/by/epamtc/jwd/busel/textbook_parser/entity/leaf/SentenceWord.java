@@ -16,7 +16,7 @@ public class SentenceWord implements Text {
     }
 
     @Override
-    public void m() {
+    public void fillWithContents(StringBuilder builder) {
         System.out.println(value);
     }
 

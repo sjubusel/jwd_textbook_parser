@@ -20,7 +20,7 @@ public class Main {
         }
 
         StringBuilder builder = new StringBuilder();
-        text.m(builder);
+        text.fillWithContents(builder);
         System.out.println(new String(builder));
     }
 }

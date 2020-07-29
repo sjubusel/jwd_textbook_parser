@@ -20,7 +20,7 @@ public class Paragraph implements Text, Composite {
     }
 
     @Override
-    public void m() {
+    public void fillWithContents(StringBuilder builder) {
 
     }
 
