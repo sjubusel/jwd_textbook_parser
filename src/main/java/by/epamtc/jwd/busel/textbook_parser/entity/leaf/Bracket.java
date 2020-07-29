@@ -1,8 +1,9 @@
 package by.epamtc.jwd.busel.textbook_parser.entity.leaf;
 
+import by.epamtc.jwd.busel.textbook_parser.entity.CompositeElement;
 import by.epamtc.jwd.busel.textbook_parser.entity.Text;
 
-public class Bracket implements Text {
+public class Bracket implements Text, CompositeElement {
     /**
      * an opening or closing round bracket
      */
@@ -23,6 +24,11 @@ public class Bracket implements Text {
     @Override
     public boolean isComposite() {
         return false;
+    }
+
+    @Override
+    public String receiveContents() {
+        return value;
     }
 
     public String getValue() {

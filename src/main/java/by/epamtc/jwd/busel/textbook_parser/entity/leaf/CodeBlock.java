@@ -1,8 +1,9 @@
 package by.epamtc.jwd.busel.textbook_parser.entity.leaf;
 
+import by.epamtc.jwd.busel.textbook_parser.entity.CompositeElement;
 import by.epamtc.jwd.busel.textbook_parser.entity.Text;
 
-public class CodeBlock implements Text {
+public class CodeBlock implements Text, CompositeElement {
     /**
      * code block, which consists of clock lines
      */
@@ -23,6 +24,11 @@ public class CodeBlock implements Text {
     @Override
     public boolean isComposite() {
         return false;
+    }
+
+    @Override
+    public String receiveContents() {
+        return value;
     }
 
     public String getValue() {

@@ -1,8 +1,9 @@
 package by.epamtc.jwd.busel.textbook_parser.entity.leaf;
 
+import by.epamtc.jwd.busel.textbook_parser.entity.CompositeElement;
 import by.epamtc.jwd.busel.textbook_parser.entity.Text;
 
-public class SentenceWord implements Text {
+public class SentenceWord implements Text, CompositeElement {
     /**
      * simple word or punctuation mark
      */
@@ -23,6 +24,11 @@ public class SentenceWord implements Text {
     @Override
     public boolean isComposite() {
         return false;
+    }
+
+    @Override
+    public String receiveContents() {
+        return value;
     }
 
     public String getValue() {

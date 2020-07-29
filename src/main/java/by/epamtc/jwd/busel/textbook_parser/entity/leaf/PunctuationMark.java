@@ -1,8 +1,9 @@
 package by.epamtc.jwd.busel.textbook_parser.entity.leaf;
 
+import by.epamtc.jwd.busel.textbook_parser.entity.CompositeElement;
 import by.epamtc.jwd.busel.textbook_parser.entity.Text;
 
-public class PunctuationMark implements Text {
+public class PunctuationMark implements Text, CompositeElement {
     /**
      * a punctuation mark
      */
@@ -23,6 +24,11 @@ public class PunctuationMark implements Text {
     @Override
     public boolean isComposite() {
         return false;
+    }
+
+    @Override
+    public String receiveContents() {
+        return value;
     }
 
     public String getValue() {
