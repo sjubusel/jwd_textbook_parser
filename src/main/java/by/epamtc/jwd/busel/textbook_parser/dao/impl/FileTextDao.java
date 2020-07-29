@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.util.Deque;
 import java.util.LinkedList;
 
+import static by.epamtc.jwd.busel.textbook_parser.entity.RegExPattern.*;
+
 public class FileTextDao implements TextDao {
     private final ParserProvider parserProvider = new ParserProvider();
     private StringBuilder codeBlockBuilder = new StringBuilder();
@@ -73,7 +75,7 @@ public class FileTextDao implements TextDao {
     }
 
     private String cleanLine(String line) {
-        line = line.replaceAll("[ \\t]{2,}|\\t", " ");
+        line = line.replaceAll(REPEATING_WHITESPACES, BLANK_SPACE);
         return line.trim();
     }
 

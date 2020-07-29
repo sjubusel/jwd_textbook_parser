@@ -7,6 +7,8 @@ import java.util.Deque;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static by.epamtc.jwd.busel.textbook_parser.entity.RegExPattern.*;
+
 public class ParserProvider {
     private TextParser codeBlockParser = new CodeBlockIntoTextComponentParser();
     private TextParser textBlockParser = new TextBlockIntoParagraphParser();
@@ -20,7 +22,7 @@ public class ParserProvider {
         sentenceParser.setNext(null);
     }
 
-    private final Pattern curlyBracketsPattern = Pattern.compile("[{}]");
+    private Pattern curlyBracketsPattern = Pattern.compile(CURLY_BRACKET);
 
     public boolean isCodeLine(String line, Deque<String> curlyBracketsStack) {
         Matcher matcher = curlyBracketsPattern.matcher(line);
@@ -34,14 +36,14 @@ public class ParserProvider {
                 curlyBracketsStack.pollLast();
             }
         }
-        if (line.matches("[\\w]+\\s=\\s[\\w]+;?\n?")) {
+        if (line.matches(SPECIAL_CODE_LINE_CASE)) {
             isCodelineable = true;
         }
         return isCodelineable;
     }
 
     public void parseAndUpdate(String str, Text text) {
-        if (str.contains("{") || str.matches("[\\w]+\\s=\\s[\\w]+;?\n?")) {
+        if (str.contains("{") || str.matches(SPECIAL_CODE_LINE_CASE)) {
             codeBlockParser.parseAndUpdate(str, text);
         } else {
             textBlockParser.parseAndUpdate(str, text);

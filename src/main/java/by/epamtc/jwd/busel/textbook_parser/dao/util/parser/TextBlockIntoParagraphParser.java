@@ -7,8 +7,11 @@ import by.epamtc.jwd.busel.textbook_parser.entity.composite.TextComposite;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static by.epamtc.jwd.busel.textbook_parser.entity.RegExPattern.*;
+
 public class TextBlockIntoParagraphParser extends TextParser {
-    private Pattern paragraphPattern = Pattern.compile("(^[0-9]\\.([0-9]\\.)*[ \\t]+[-A-Za-z \\t]+$)|(^[A-Z][ \\S]+\\n?([a-z][ \\S]+\\n?)+?[.:!?]$)", Pattern.MULTILINE);
+    private Pattern paragraphPattern = Pattern.compile(PARAGRAPH,
+            Pattern.MULTILINE);
 
     @Override
     public void parseAndUpdate(String parsableElement, Text text) {
@@ -23,8 +26,8 @@ public class TextBlockIntoParagraphParser extends TextParser {
             Matcher matcher = paragraphPattern.matcher(parsableElement);
             while (matcher.find()) {
                 Paragraph paragraph = new Paragraph();
-                String strParagraph = matcher.group().replaceAll("\n", " ")
-                        .trim();
+                String strParagraph = matcher.group()
+                        .replaceAll(LINE_BREAK, BLANK_SPACE).trim();
                 next.parseAndUpdate(strParagraph, paragraph);
                 if (textComposite != null) {
                     textComposite.add(paragraph);
