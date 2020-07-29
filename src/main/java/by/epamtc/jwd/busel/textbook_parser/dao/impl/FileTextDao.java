@@ -2,12 +2,12 @@ package by.epamtc.jwd.busel.textbook_parser.dao.impl;
 
 import by.epamtc.jwd.busel.textbook_parser.dao.TextDao;
 import by.epamtc.jwd.busel.textbook_parser.dao.exception.DaoException;
+import by.epamtc.jwd.busel.textbook_parser.dao.util.FileAccessAssistant;
 import by.epamtc.jwd.busel.textbook_parser.dao.util.ParserProvider;
 import by.epamtc.jwd.busel.textbook_parser.entity.Text;
 import by.epamtc.jwd.busel.textbook_parser.entity.composite.TextComposite;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -17,7 +17,9 @@ import java.util.LinkedList;
 import static by.epamtc.jwd.busel.textbook_parser.entity.RegExPattern.*;
 
 public class FileTextDao implements TextDao {
-    private final ParserProvider parserProvider = new ParserProvider();
+    private ParserProvider parserProvider = new ParserProvider();
+    private FileAccessAssistant fileAssistant = FileAccessAssistant.getInstance();
+
     private StringBuilder codeBlockBuilder = new StringBuilder();
     private StringBuilder nonCodeBlockBuilder = new StringBuilder();
     private StringBuilder currentBuilder = nonCodeBlockBuilder;
@@ -25,7 +27,7 @@ public class FileTextDao implements TextDao {
     @Override
     public Text find(String textName) throws DaoException {
         Text text = new TextComposite();
-        String filePath = receiveFilePath(textName);
+        String filePath = fileAssistant.formTextFilePath(textName);
 
         try (FileReader in = new FileReader(filePath);
              BufferedReader bufferedReader = new BufferedReader(in)) {
@@ -68,10 +70,6 @@ public class FileTextDao implements TextDao {
         currentBuilder.delete(0, currentBuilder.length());
 
         return text;
-    }
-
-    private String receiveFilePath(String textName) {
-        return System.getProperty("java.class.path") + File.separator + textName;
     }
 
     private String cleanLine(String line) {
