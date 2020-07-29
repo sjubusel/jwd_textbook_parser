@@ -16,23 +16,16 @@ import java.util.LinkedList;
 
 public class FileTextDao implements TextDao {
     private final ParserProvider parserProvider = new ParserProvider();
+    private StringBuilder codeBlockBuilder = new StringBuilder();
+    private StringBuilder nonCodeBlockBuilder = new StringBuilder();
+    private StringBuilder currentBuilder = nonCodeBlockBuilder;
 
     @Override
     public Text find(String textName) throws DaoException {
         Text text = new TextComposite();
-        StringBuilder codeBlockBuilder = new StringBuilder();
-        StringBuilder nonCodeBlockBuilder = new StringBuilder();
-        StringBuilder currentBuilder = nonCodeBlockBuilder;
+        String filePath = receiveFilePath(textName);
 
-        String testFilePath = System.getProperty("user.dir") +
-                File.separator + "src" +
-                File.separator + "main" +
-                File.separator + "resources" +
-                File.separator + textName;
-        String filePath = System.getProperty("java.class.path") + File.separator + textName;
-
-        //TODO create class FileAssistant in order to form a File-Path
-        try (FileReader in = new FileReader(testFilePath);
+        try (FileReader in = new FileReader(filePath);
              BufferedReader bufferedReader = new BufferedReader(in)) {
 
             Deque<String> curlyBracketsStack = new LinkedList<>();
@@ -43,10 +36,8 @@ public class FileTextDao implements TextDao {
 
                 if (!curlyBracketsStack.isEmpty()) {
                     if (currentBuilder == nonCodeBlockBuilder) {
-                        String parsableBlock = new String(currentBuilder);
-                        parserProvider.parseAndUpdate(parsableBlock, text);
-                        currentBuilder.delete(0, currentBuilder.length());
-                        currentBuilder = codeBlockBuilder;
+                        forwardToParsing(currentBuilder, text);
+                        changeCurrentBuilder(codeBlockBuilder);
                     }
                     currentBuilder.append(line).append('\n');
                     continue;
@@ -54,17 +45,13 @@ public class FileTextDao implements TextDao {
 
                 if (!isCodelineable) {
                     if (currentBuilder == codeBlockBuilder) {
-                        String parsableBlock = new String(currentBuilder);
-                        parserProvider.parseAndUpdate(parsableBlock, text);
-                        currentBuilder.delete(0, currentBuilder.length());
-                        currentBuilder = nonCodeBlockBuilder;
+                        forwardToParsing(currentBuilder, text);
+                        changeCurrentBuilder(nonCodeBlockBuilder);
                     }
                 } else {
                     if (currentBuilder == nonCodeBlockBuilder) {
-                        String parsableBlock = new String(currentBuilder);
-                        parserProvider.parseAndUpdate(parsableBlock, text);
-                        currentBuilder.delete(0, currentBuilder.length());
-                        currentBuilder = codeBlockBuilder;
+                        forwardToParsing(currentBuilder, text);
+                        changeCurrentBuilder(codeBlockBuilder);
                     }
                 }
                 currentBuilder.append(line).append('\n');
@@ -75,14 +62,28 @@ public class FileTextDao implements TextDao {
             throw new DaoException("OTHER DAO IO ERROR", e);
         }
 
-        String lastParsableLine = new String(currentBuilder);
-        parserProvider.parseAndUpdate(lastParsableLine, text);
+        forwardToParsing(currentBuilder, text);
+        currentBuilder.delete(0, currentBuilder.length());
 
         return text;
+    }
+
+    private String receiveFilePath(String textName) {
+        return System.getProperty("java.class.path") + File.separator + textName;
     }
 
     private String cleanLine(String line) {
         line = line.replaceAll("[ \\t]{2,}|\\t", " ");
         return line.trim();
+    }
+
+    private void forwardToParsing(StringBuilder currentBuilder, Text text) {
+        String parsableBlock = new String(currentBuilder);
+        parserProvider.parseAndUpdate(parsableBlock, text);
+    }
+
+    private void changeCurrentBuilder(StringBuilder codeBlockBuilder) {
+        currentBuilder.delete(0, currentBuilder.length());
+        currentBuilder = codeBlockBuilder;
     }
 }
